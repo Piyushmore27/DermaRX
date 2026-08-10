@@ -1,0 +1,17 @@
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Java compiled files
+*.class
+
+# Tomcat generated files
+work/
+temp/
+
+# Logs
+*.log
+
+# Environment / secrets
+.env
