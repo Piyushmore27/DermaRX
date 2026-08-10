@@ -20,3 +20,20 @@ yarn-error.log*
 # OS files
 .DS_Store
 Thumbs.db
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Java compiled files
+*.class
+
+# Tomcat generated files
+work/
+temp/
+
+# Logs
+*.log
+
+# Environment / secrets
+.env
