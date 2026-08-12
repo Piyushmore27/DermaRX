@@ -10,14 +10,17 @@ public class CustomerProfileService {
 
 	public int saveCustomerProfile(CustomerProfile customerProfile) {
 		
-		CustomerProfileRepository customerProfileRepository =new CustomerProfileRepository();
+		CustomerProfileRepository customerProfileRepository = new CustomerProfileRepository();
 		
 		return customerProfileRepository.saveCustomerProfile(customerProfile);
-		}
+	}
 		
-		public List<CustomerProfile> getAllCustomerProfiles() {
-			CustomerProfileRepository customerProfileRepository =new CustomerProfileRepository();
-			return customerProfileRepository.getAllCustomerProfiles();
-		}
+	public List<CustomerProfile> getAllCustomerProfiles() {
+		
+		CustomerProfileRepository customerProfileRepository =new CustomerProfileRepository();
+		
+		return customerProfileRepository.getAllCustomerProfiles();
+	
+	}
 	
 }
