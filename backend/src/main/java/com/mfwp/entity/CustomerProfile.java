@@ -2,19 +2,19 @@ package com.mfwp.entity;
 
 public class CustomerProfile {
 
-	private int customerId;	
+	private long customerId;	
 	private String firstName;
 	private String lastName;
 	private String gender;
 	private String dateOfBirth;
 	private String prefix;
-	private int userId;//foreign key  user
+	private long userId;//foreign key  user
 	private String userType;
 	
-	public int getCustomerId() {
+	public long getCustomerId() {
 		return customerId;
 	}
-	public void setCustomerId(int customerId) {
+	public void setCustomerId(long customerId) {
 		this.customerId = customerId;
 	}
 	public String getFirstName() {
@@ -47,10 +47,10 @@ public class CustomerProfile {
 	public void setPrefix(String prefix) {
 		this.prefix = prefix;
 	}
-	public int getUserId() {
+	public long getUserId() {
 		return userId;
 	}
-	public void setUserId(int userId) {
+	public void setUserId(long userId) {
 		this.userId = userId;
 	}
 	public String getUserType() {

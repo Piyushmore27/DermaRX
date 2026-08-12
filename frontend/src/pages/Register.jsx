@@ -35,7 +35,7 @@ function Register() {
         e.preventDefault();
 
     // Basic validation
-        if (!name || !password || !confirmPassword || !role) {
+        if (!name || !password || !confirmPassword) {
             alert("Please fill all fields");
             return;
         }
@@ -53,6 +53,22 @@ function Register() {
         formData.append("role",role);
 
         console.log(formData);
+
+        const response = await fetch(
+            "http://localhost:8080/backend/api/Register",
+        {
+            method: "POST",
+            // headers: {
+            //     "Content-Type": "application/x-www-form-urlencoded"
+            // },
+            body: formData
+        }
+        );
+        const data = await response.json();
+
+        if (data.success) {
+            navigate("/home");
+        }
     }
 
 

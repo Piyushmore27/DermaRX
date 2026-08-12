@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import com.google.gson.Gson;
+import com.mfwp.entity.ApiResponse;
 import com.mfwp.entity.User;
 import com.mfwp.service.UserService;
 
@@ -24,6 +26,19 @@ public class LoginServlet extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
+    
+    private static boolean checkUser(User user) {
+    	
+    	UserService userService = new UserService();
+    	
+    	if(userService.isValidUser(user)) {
+    		
+    		return true;
+    	
+    	}
+    
+    	return false;
+    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -34,24 +49,42 @@ public class LoginServlet extends HttpServlet {
 		
 		User user=new User();
 		user.setPassword(request.getParameter("password"));
-		user.setMobileNumber(request.getParameter("mobileNumber"));
-		user.setEmail(request.getParameter("email"));
+		user.setEmail(request.getParameter("username"));
+		user.setMobileNumber(request.getParameter("username"));
 		
 //		String email=request.getParameter("email");
 //		String mobileNumber=request.getParameter("mobileNumber");
 //		String password=request.getParameter("password");
 //		String userType=request.getParameter("userType");
 		
-		UserService userService = new UserService();
-		if(userService.isValidUser(user)) {
-			System.out.println("User login successfully");
-			response.setContentType("text/html");
-			response.getWriter().print("<html><head></head><body><h1>User login successfully</h1></body></html>");
+		Gson gson = new Gson(); // Needed for react
+		
+		if(LoginServlet.checkUser(user)) {
+			
+			ApiResponse<User> userAPI = new ApiResponse<>(
+					true, "User Login Successfull", user);
+			
+			String json = gson.toJson(userAPI);
+			
+			response.setContentType("application/json");
+			response.getWriter().write(json);
+			
+//			System.out.println("User login successfully");
+//			response.setContentType("text/html");
+//			response.getWriter().print("<html><head></head><body><h1>User login successfully</h1></body></html>");
 		}
 		else {
-			System.out.println("Invalid Credentails");
-			response.setContentType("text/html");
-			response.getWriter().print("<html><head></head><body><h1>Invalid Credentails</h1></body></html>");
+			
+			ApiResponse<User> userAPI = new ApiResponse<>(
+					false, "Login Failed", user);
+			
+			String json = gson.toJson(userAPI);
+			
+			response.setContentType("application/json");
+			response.getWriter().write(json);
+//			System.out.println("Invalid Credentails");
+//			response.setContentType("text/html");
+//			response.getWriter().print("<html><head></head><body><h1>Invalid Credentails</h1></body></html>");
 		}
 		
 	}

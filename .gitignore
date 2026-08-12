@@ -37,3 +37,50 @@ temp/
 
 # Environment / secrets
 .env
+/.metadata/
+
+
+.metadata/
+backend/.metadata/
+.classpath
+.project
+.settings/
+Servers/
+.recommenders/
+
+### Compiled output ###
+bin/
+build/
+target/
+*.class
+
+### Eclipse server deployment (per-machine temp state) ###
+.sts4-cache/
+wtpwebapps/
+
+### OS junk ###
+.DS_Store
+Thumbs.db
+desktop.ini
+
+### Logs ###
+*.log
+
+### Frontend (React/Node) ###
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.env
+frontend/.env.local
+frontend/npm-debug.log*
+frontend/yarn-error.log*
+
+### Environment / secrets — never commit DB passwords, API keys, etc ###
+*.env
+application.properties.local
+db.properties
+
+### IDE alternatives (in case anyone uses these too) ###
+.vscode/
+*.iml
+.idea/
