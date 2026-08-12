@@ -23,8 +23,8 @@ function Navbar() {
                 <p className='text-black hover:text-neutral-600 cursor-pointer'>Doctor Consult</p>
                 <p className='text-black hover:text-neutral-600 cursor-pointer'>Offers</p>
             </div>
-            <div className="right px-2 py-1">
-                <MainButton title={"Login"} onClick={handleLogin}/>
+            <div className="right px-4">
+                <MainButton title={"Login"} onClick={handleLogin} className={' border-2 border-sky-200 rounded-2xl px-4 py-2 w-30 text-center bg-[#80D9EB] hover:bg-[#5acae0] hover:border-[#5acae0] font-bold text-white  cursor-pointer '} />
             </div>
         </div>
       

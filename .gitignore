@@ -1,45 +1,4 @@
-# Dependencies
-node_modules/
-
-# Production build
-dist/
-build/
-
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# OS files
-.DS_Store
-Thumbs.db
-# Eclipse
-.classpath
-.project
-.settings/
-
-# Java compiled files
-*.class
-
-# Tomcat generated files
-work/
-temp/
-
-# Logs
-*.log
-
-# Environment / secrets
-.env
-/.metadata/
-
-
+### Eclipse workspace/project metadata — machine-specific, never share ###
 .metadata/
 backend/.metadata/
 .classpath
