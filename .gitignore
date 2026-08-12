@@ -1,17 +1,45 @@
-# Eclipse
+### Eclipse workspace/project metadata — machine-specific, never share ###
+.metadata/
+backend/.metadata/
 .classpath
 .project
 .settings/
+Servers/
+.recommenders/
 
-# Java compiled files
+### Compiled output ###
+bin/
+build/
+target/
 *.class
 
-# Tomcat generated files
-work/
-temp/
+### Eclipse server deployment (per-machine temp state) ###
+.sts4-cache/
+wtpwebapps/
 
-# Logs
+### OS junk ###
+.DS_Store
+Thumbs.db
+desktop.ini
+
+### Logs ###
 *.log
 
-# Environment / secrets
-.env
+### Frontend (React/Node) ###
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.env
+frontend/.env.local
+frontend/npm-debug.log*
+frontend/yarn-error.log*
+
+### Environment / secrets — never commit DB passwords, API keys, etc ###
+*.env
+application.properties.local
+db.properties
+
+### IDE alternatives (in case anyone uses these too) ###
+.vscode/
+*.iml
+.idea/
