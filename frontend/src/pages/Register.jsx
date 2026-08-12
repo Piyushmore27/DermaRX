@@ -32,7 +32,7 @@ function Register() {
     const handleRegister = async (e) => {
         e.preventDefault();
 
-        // Basic validation
+    // Basic validation
         if (!name || !password || !confirmPassword) {
             alert("Please fill all fields");
             return;
@@ -54,13 +54,13 @@ function Register() {
 
         const response = await fetch(
             "http://localhost:8080/backend/api/Register",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                body: formData
-            }
+        {
+            method: "POST",
+            // headers: {
+            //     "Content-Type": "application/x-www-form-urlencoded"
+            // },
+            body: formData
+        }
         );
         const data = await response.json();
 

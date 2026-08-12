@@ -14,23 +14,27 @@ public class CustomerProfileRepository {
 	public int saveCustomerProfile(CustomerProfile customerProfile) {
 		
 		Connection connection = null;
-		PreparedStatement preparedStatement=null;
-		int profileUpdate=0;
+		PreparedStatement preparedStatement = null;
+		int profileUpdate = 0;
+		
 		try {
 			connection = DbConnectionUtil.getDatabaseConnection();
-			String query=null;
-			String userIdQuery ="SELECT user_id FROM customerProfile WHERE user_id = ?";
+			
+			String query = null;
+			String userIdQuery = "SELECT user_id FROM customerProfile WHERE user_id = ?";
 			preparedStatement = connection.prepareStatement(userIdQuery);
 			
-			preparedStatement.setInt(1,customerProfile.getUserId());
-			ResultSet resultSet=preparedStatement.executeQuery();
+			preparedStatement.setLong(1,customerProfile.getUserId());
+			ResultSet resultSet = preparedStatement.executeQuery();
 			
 
 			if(resultSet.next()) {
-				query="UPDATE CustomerProfile SET first_name=?,last_name=?,gender=?,dateOfBirth=?,prefix=? where user_id=?";
+				query = "UPDATE CustomerProfile SET first_name=?,last_name=?,"
+						+ "gender=?,dateOfBirth=?,prefix=? where user_id=?";
 			}
 			else {
-			 query = "INSERT INTO CustomerProfile(first_name,last_name,gender,dateOfBirth,prefix,user_id) VALUES (?,?,?,?,?,?)";
+				query = "INSERT INTO CustomerProfile(first_name,last_name,"
+						+ "gender,dateOfBirth,prefix,user_id) VALUES (?,?,?,?,?,?)";
 			}
 			
 			preparedStatement = connection.prepareStatement(query);
@@ -40,15 +44,29 @@ public class CustomerProfileRepository {
 			preparedStatement.setString(3, customerProfile.getGender());
 			preparedStatement.setString(4, customerProfile.getDateOfBirth());
 			preparedStatement.setString(5, customerProfile.getPrefix());
-			preparedStatement.setInt(6, customerProfile.getUserId());
+			preparedStatement.setLong(6, customerProfile.getUserId());
 			
-			profileUpdate=preparedStatement.executeUpdate();
-			System.out.println(profileUpdate);
+			profileUpdate = preparedStatement.executeUpdate();
+			
+			if(profileUpdate == 1) {
+				
+				query = "SELECT Customer_id FROM CustomerProfile WHERE User_id = "+customerProfile.getUserId();
+				preparedStatement = connection.prepareStatement(query);
+				
+				resultSet = preparedStatement.executeQuery();
+				
+				if(resultSet.next()) {
+					
+					customerProfile.setCustomerId(resultSet.getInt("Customer_id"));
+				}
+				
+			}
 			
 			}
 			catch(Exception e){
 			e.printStackTrace(); 
 		}
+		
 		return profileUpdate;
 	}
 	

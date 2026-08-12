@@ -1,56 +1,113 @@
 package com.mfwp.service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import com.mfwp.entity.User;
 import com.mfwp.repository.UserRepository;
 
 public class UserService {
+	
+	
+	private static boolean identifyUsername(User user) {
+		
+		String query = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
+		
+		
+		if(Pattern.matches(query, user.getEmail())) {
+			
+			user.setEmail(user.getEmail());
+			user.setMobileNumber(null);
 
-public int  saveUser(User user) {
+			return true;
+		
+		}else {
+			
+			query = "^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$";
+			
+			if(Pattern.matches(query, user.getMobileNumber())) {
+				
+				user.setMobileNumber(user.getMobileNumber());
+				user.setEmail(null);
+
+				return true;
+			
+			}else {
+				
+				user.setEmail(null);
+				user.setMobileNumber(null);
+				
+				return false;
+			}
+		}
+	}
+	
+	
+	
+	//Registration Method
+	public int saveUser(User user) {
+		
+		if(!UserService.identifyUsername(user)) {
+			
+			return -1; 
+		}
+		
 		
 		UserRepository userRepostiory =new UserRepository();
 		
-		if(null==user.getEmail() && null == user.getMobileNumber()) {
-			System.out.println("Please enter email or mobile");
+		
+		if(null == user.getPassword() || user.getPassword().equals("")) {
+			
+			return 0;
+		
+		}else if(user.getPassword().length() > 50 || user.getPassword().length() < 8) {
+			
 			return 0;
 		}
 		
-		if(null==user.getPassword()) {
-			System.out.println("Please enter password");
-			return 0;
+		
+		if(user.getMobileNumber() == null) {
+			
+			//Please check if user with email id exists
+			if(userRepostiory.checkifEmailExists(user)) {
+				return 0;
+			}
+			
+		}else {
+			
+			//Please check if user with mobile number exits
+			if(userRepostiory.checkifMobileNumberExists(user)) {
+				return 0;
+			}
 		}
 		
-		//Please check if user with email id exists
-		if(userRepostiory.checkifEmailExists(user)) {
-			System.out.println("Email already exits");
-			return 0;
-		}
-		
-		//Please check if user with mobile number exits
-		if(userRepostiory.checkifMobileNumberExists(user)) {
-			System.out.println("Mobile number already exits");
-			return 0;
-		}
 		
 		return userRepostiory.saveUser(user);
 	}
 	
 	
+	//Login Verification
 	public boolean isValidUser(User user){
 		
-		UserRepository userRepostiory =new UserRepository();
+		if(!UserService.identifyUsername(user)) {
+			
+			return false; 
+		}
+		
+		UserRepository userRepostiory = new UserRepository();
 		
 		if(userRepostiory.isValidUser(user)) {
-			System.out.println("Login Successfully");
+			
+			return true;
 		}
-		else {
-			System.out.println("Invalid credentials");
-			return false;
-		}
-		return userRepostiory.isValidUser(user);
+		
+		return false;
 		
 	}
+	
+	
+	
+	//Admin Method
 	public List<User> getAllUsers() {
 		UserRepository userrepostiory =new UserRepository();
 		return userrepostiory.getAllUsers();
