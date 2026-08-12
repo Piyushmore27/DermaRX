@@ -1,13 +1,14 @@
 import React from 'react'
 
-function MainButton({title,onClick}) {
+function MainButton({title,onClick,className,svg}) {
   return (
-    <div className=" border border-green-400 px-4 py-1  rounded-2xl text-neutral-700 cursor-pointer text-center hover:bg-green-300"
+    <div className={className}
         onClick={onClick}
     >
       <div className="text">
         {title}
       </div>
+      {svg}
       
     </div>
   )
