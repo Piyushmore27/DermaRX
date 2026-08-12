@@ -22,9 +22,9 @@ public int saveUser(User user) {
 		try {
 			connection  = DbConnectionUtil.getDatabaseConnection();
 			
-			String roleQuery ="SELECT role_id from userrole where role_name ='"+user.getUserType()+"'";
+			String roleQuery ="SELECT role_id from roles where User_type = 'user'";
 			preparedStatement = connection.prepareStatement(roleQuery);
-			resultSet=preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			
 			Long roleId  = null;
 			while(resultSet.next()) {
@@ -33,14 +33,34 @@ public int saveUser(User user) {
 				break;
 			}
 			System.out.println(resultSet.getLong("role_id"));
-
-			String query = "INSERT INTO User (email,password,mobile_number,role_id) VALUES (?,?,?,?)";
-			preparedStatement = connection.prepareStatement(query);
-
-			preparedStatement.setString(1, user.getEmail());
-			preparedStatement.setString(2, user.getPassword());
-			preparedStatement.setString(3, user.getMobileNumber());
-			preparedStatement.setLong(4, roleId);
+			
+			String query = "";
+//			query = "INSERT INTO User (email,password,mobile_number,role_id) VALUES (?,?,?,?)";
+			
+			if(user.getEmail() == null) {
+				query = "INSERT INTO userdb (Password, Phone_number, Role_id) VALUES (?,?,?)";
+				
+				preparedStatement = null;
+				
+				preparedStatement = connection.prepareStatement(query);
+				
+				preparedStatement.setString(1, user.getPassword());
+				preparedStatement.setString(2, user.getMobileNumber());
+				preparedStatement.setLong(3, roleId);
+			
+			}else {
+				query = "INSERT INTO userdb (Password, Email, Role_id) VALUES (?,?,?)";
+				
+				preparedStatement = null;
+				
+				preparedStatement = connection.prepareStatement(query);
+				
+				preparedStatement.setString(1, user.getPassword());
+				preparedStatement.setString(2, user.getEmail());
+				preparedStatement.setLong(3, roleId);
+				
+			}
+			
 
 			rowsUpdated = preparedStatement.executeUpdate();
 			
@@ -71,7 +91,8 @@ public int saveUser(User user) {
 		try {
 		Connection connection  = DbConnectionUtil.getDatabaseConnection();
 			
-		String query ="SELECT 1 FROM user WHERE email = ? LIMIT 1";
+//		String query ="SELECT 1 FROM user WHERE email = ? LIMIT 1";
+		String query ="SELECT 1 FROM userdb WHERE Email = ? LIMIT 1";
 		PreparedStatement preparedStatement = connection.prepareStatement(query);
 		
 		preparedStatement.setString(1,user.getEmail());
@@ -92,7 +113,8 @@ public int saveUser(User user) {
 		try {
 		Connection connection  = DbConnectionUtil.getDatabaseConnection();
 			
-		String query ="SELECT 1 FROM user WHERE mobile_number = ? LIMIT 1";
+//		String query ="SELECT 1 FROM user WHERE mobile_number = ? LIMIT 1";
+		String query ="SELECT 1 FROM userdb WHERE Phone_number = ? LIMIT 1";
 		PreparedStatement preparedStatement = connection.prepareStatement(query);
 		
 		preparedStatement.setString(1,user.getMobileNumber());
@@ -112,23 +134,41 @@ public int saveUser(User user) {
 		try {
 			Connection connection  = DbConnectionUtil.getDatabaseConnection();
 				
-			String query ="SELECT 1 FROM user WHERE (mobile_number = ? AND password=?) OR (email = ? AND password=?) LIMIT 1";
-			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			String query = "";
+			PreparedStatement preparedStatement = null;
+		//	String query = "SELECT 1 FROM user WHERE (mobile_number = ? AND password=?) OR (email = ? AND password=?) LIMIT 1";
 			
-			preparedStatement.setString(1,user.getMobileNumber());
-			preparedStatement.setString(2,user.getPassword());
-			preparedStatement.setString(3,user.getEmail());
-			preparedStatement.setString(4,user.getPassword());
-			ResultSet resultSet=preparedStatement.executeQuery();
 			
-			return resultSet.next();
+			if(user.getEmail() == null) {
+				query = "SELECT User_id FROM userdb WHERE (Phone_number = ? AND Password = ?) LIMIT 1";
+				preparedStatement = connection.prepareStatement(query);
+				preparedStatement.setString(1,user.getMobileNumber());
+				preparedStatement.setString(2,user.getPassword());
+				
 			
+			}else {
+				query = "SELECT User_id FROM userdb WHERE (Email = ? AND Password = ?) LIMIT 1";
+				preparedStatement = connection.prepareStatement(query);
+				preparedStatement.setString(1,user.getEmail());
+				preparedStatement.setString(2,user.getPassword());
+				
 			}
-			catch (Exception e) {
+			
+			ResultSet resultSet = preparedStatement.executeQuery();
+			
+			if(resultSet.next()) {
+				
+				user.setUserId(resultSet.getLong("User_id"));
+				return true;
+			}
+			
+			}catch (Exception e) {
 				e.printStackTrace(); 
+			
 			}
-			return false;
-		}
+			
+		return false;
+	}
 	
 	
 	
@@ -137,7 +177,7 @@ public int saveUser(User user) {
 		List<User> userList = new ArrayList<>();
 	try {
 		Connection connection = DbConnectionUtil.getDatabaseConnection();
-		PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from user");
+		PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from userdb");
 		
 		ResultSet resultSet=preparedStatement.executeQuery();
 		
