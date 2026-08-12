@@ -47,6 +47,20 @@ public class LoginServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 //		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
+		
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		
+		response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+		
 		User user=new User();
 		user.setPassword(request.getParameter("password"));
 		user.setEmail(request.getParameter("username"));
@@ -66,6 +80,8 @@ public class LoginServlet extends HttpServlet {
 			
 			String json = gson.toJson(userAPI);
 			
+			System.out.println("Every thing alright");
+			
 			response.setContentType("application/json");
 			response.getWriter().write(json);
 			
@@ -74,6 +90,7 @@ public class LoginServlet extends HttpServlet {
 //			response.getWriter().print("<html><head></head><body><h1>User login successfully</h1></body></html>");
 		}
 		else {
+			System.out.println("Not quite right");
 			
 			ApiResponse<User> userAPI = new ApiResponse<>(
 					false, "Login Failed", user);
@@ -87,14 +104,6 @@ public class LoginServlet extends HttpServlet {
 //			response.getWriter().print("<html><head></head><body><h1>Invalid Credentails</h1></body></html>");
 		}
 		
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }
