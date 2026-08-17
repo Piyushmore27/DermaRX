@@ -1,11 +1,14 @@
 package com.mfwp.servlet;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.mfwp.entity.ApiResponse;
@@ -15,7 +18,8 @@ import com.mfwp.service.UserService;
 /**
  * Servlet implementation class LoginServlet
  */
-@WebServlet("/LoginServlet")
+//@WebServlet("/LoginServlet")
+@MultipartConfig
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -46,7 +50,8 @@ public class LoginServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 //		response.getWriter().append("Served at: ").append(request.getContextPath());
-		
+		response.setContentType("text/plain");
+		response.getWriter().write("Post for login");
 		
 	}
 
@@ -56,12 +61,24 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+		response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173/login");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type");
         response.setHeader("Access-Control-Allow-Credentials", "true");
 		
-		User user=new User();
+        Gson gson = new Gson(); // Needed for react
+        System.out.println("Data at Backend");
+        
+        BufferedReader reader = request.getReader();
+
+        String json = reader.lines()
+                             .collect(Collectors.joining());
+
+        System.out.println(json);
+
+        
+        
+		User user = new User();
 		user.setPassword(request.getParameter("password"));
 		user.setEmail(request.getParameter("username"));
 		user.setMobileNumber(request.getParameter("username"));
@@ -71,19 +88,14 @@ public class LoginServlet extends HttpServlet {
 //		String password=request.getParameter("password");
 //		String userType=request.getParameter("userType");
 		
-		Gson gson = new Gson(); // Needed for react
 		
+		ApiResponse<User> userAPI = null;
 		if(LoginServlet.checkUser(user)) {
 			
-			ApiResponse<User> userAPI = new ApiResponse<>(
+			userAPI = new ApiResponse<>(
 					true, "User Login Successfull", user);
 			
-			String json = gson.toJson(userAPI);
-			
 			System.out.println("Every thing alright");
-			
-			response.setContentType("application/json");
-			response.getWriter().write(json);
 			
 //			System.out.println("User login successfully");
 //			response.setContentType("text/html");
@@ -92,18 +104,19 @@ public class LoginServlet extends HttpServlet {
 		else {
 			System.out.println("Not quite right");
 			
-			ApiResponse<User> userAPI = new ApiResponse<>(
+			userAPI = new ApiResponse<>(
 					false, "Login Failed", user);
 			
-			String json = gson.toJson(userAPI);
-			
-			response.setContentType("application/json");
-			response.getWriter().write(json);
 //			System.out.println("Invalid Credentails");
 //			response.setContentType("text/html");
 //			response.getWriter().print("<html><head></head><body><h1>Invalid Credentails</h1></body></html>");
 		}
 		
+		
+		String json1 = gson.toJson(userAPI);
+		
+		response.setContentType("application/json");
+		response.getWriter().write(json1);
 	}
 
 }

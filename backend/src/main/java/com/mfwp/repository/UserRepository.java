@@ -32,7 +32,6 @@ public int saveUser(User user) {
 
 				break;
 			}
-			System.out.println(resultSet.getLong("role_id"));
 			
 			String query = "";
 //			query = "INSERT INTO User (email,password,mobile_number,role_id) VALUES (?,?,?,?)";

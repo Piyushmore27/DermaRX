@@ -46,8 +46,7 @@ public class RegisterServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 //		response.getWriter().append("Served at: ").append(request.getContextPath());
 		response.setContentType("text/plain");
-		response.getWriter().write("Post for registration");
-        
+		response.getWriter().write("Post for registration");        
 	}
 
 	/**
@@ -63,20 +62,22 @@ public class RegisterServlet extends HttpServlet {
         
         Gson gson = new Gson(); // Needed for react
 		
-        
 		User user = new User();
 		user.setEmail(request.getParameter("username"));
 		user.setMobileNumber(request.getParameter("username"));
+		;
 		user.setPassword(request.getParameter("password"));
 		
 		
 		int rowsUpdate = RegisterServlet.createUser(user);
-		
+	
 		ApiResponse<User> userAPI;
 		if(rowsUpdate == 1) {
 			
 			userAPI = new ApiResponse<>(
 					true, "User registered successfully", user);
+			
+			System.out.println("User Registered");
 			
 //			System.out.println("User registered successfully");
 //			response.setContentType("text/html");
@@ -87,12 +88,15 @@ public class RegisterServlet extends HttpServlet {
 			
 			userAPI = new ApiResponse<>(
 					false, "Improper Username!!!", user);
+			
+			System.out.println("Improper Username!!!");
 		
 		}else {
 			
 			userAPI = new ApiResponse<>(
 					false, "User registration Unsuccessfull", user);
 			
+			System.out.println("Not successfull");
 //			System.out.println("Sorry!!! User couldn't be registered");
 //			response.getWriter().print("Sorry!!! User couldn't be registered");
 //			response.setContentType("text/html");
@@ -104,6 +108,7 @@ public class RegisterServlet extends HttpServlet {
 		
 		response.setContentType("application/json");
 		response.getWriter().write(json);
+		
 	}
 
 }

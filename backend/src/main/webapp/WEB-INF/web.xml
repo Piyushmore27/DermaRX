@@ -11,7 +11,6 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.xhtml</welcome-file>
   </welcome-file-list>
-  
   <servlet>
     <description></description>
     <display-name>UserProfile</display-name>
@@ -20,9 +19,8 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>DRXProfile</servlet-name>
-    <url-pattern>/api/Profile</url-pattern>
+    <url-pattern>/profile</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <description></description>
     <display-name>Register</display-name>
@@ -33,9 +31,7 @@
     <servlet-name>DRXRegister</servlet-name>
     <url-pattern>/api/Register</url-pattern>
   </servlet-mapping>
-  
-  
-   <servlet>
+  <servlet>
     <description></description>
     <display-name>Login</display-name>
     <servlet-name>DRXLogin</servlet-name>
@@ -43,7 +39,16 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>DRXLogin</servlet-name>
-    <url-pattern>/api/Login</url-pattern>
+    <url-pattern>/login</url-pattern>
   </servlet-mapping>
-  
+  <servlet>
+    <description></description>
+    <display-name>RegisterServlet</display-name>
+    <servlet-name>RegisterServlet</servlet-name>
+    <servlet-class>com.mfwp.servlet.RegisterServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RegisterServlet</servlet-name>
+    <url-pattern>/RegisterServlet</url-pattern>
+  </servlet-mapping>
 </web-app>
