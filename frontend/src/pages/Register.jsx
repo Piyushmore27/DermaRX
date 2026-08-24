@@ -17,7 +17,7 @@ function Register() {
     const [error, setError] = useState("");
     const [showError, setShowError] = useState(false);
 
-    const { setLogin } = useAuth();
+    const { login } = useAuth();
 
 
     const navigate = useNavigate();
@@ -63,7 +63,7 @@ function Register() {
             console.log("Data", data);
 
             if (data.success) {
-                setLogin(true);
+                login(true);
                 navigate("/");
             } else {
                 setError(data.message);
