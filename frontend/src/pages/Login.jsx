@@ -24,7 +24,25 @@ function Login() {
         console.log(formData);
 
         try {
-            const response = await API.post("/login", formData);
+            const response = await fetch(
+                "http://localhost:8080/backend/api/Login",
+            {
+                method: "POST",
+            // headers: {
+            //     "Content-Type": "application/x-www-form-urlencoded"
+            // },
+                body: formData
+            }
+            );
+
+            const data = await response.json();
+
+             if (data.success) {
+                navigate("/home");
+        
+            }else{
+                navigate("/login");
+            }
 
             console.log(response.data);
         } catch (error) {

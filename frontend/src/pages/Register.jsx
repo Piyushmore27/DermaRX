@@ -65,7 +65,10 @@ function Register() {
         const data = await response.json();
 
         if (data.success) {
-            navigate("/home");
+            navigate("/");
+        
+        }else{
+            navigate("/register");
         }
     }
     return (

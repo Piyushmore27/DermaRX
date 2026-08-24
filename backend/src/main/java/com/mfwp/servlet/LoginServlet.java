@@ -83,6 +83,7 @@ public class LoginServlet extends HttpServlet {
 		user.setEmail(request.getParameter("username"));
 		user.setMobileNumber(request.getParameter("username"));
 		
+		
 //		String email=request.getParameter("email");
 //		String mobileNumber=request.getParameter("mobileNumber");
 //		String password=request.getParameter("password");
@@ -96,7 +97,6 @@ public class LoginServlet extends HttpServlet {
 					true, "User Login Successfull", user);
 			
 			System.out.println("Every thing alright");
-			
 //			System.out.println("User login successfully");
 //			response.setContentType("text/html");
 //			response.getWriter().print("<html><head></head><body><h1>User login successfully</h1></body></html>");
@@ -107,7 +107,8 @@ public class LoginServlet extends HttpServlet {
 			userAPI = new ApiResponse<>(
 					false, "Login Failed", user);
 			
-//			System.out.println("Invalid Credentails");
+			System.out.println("Invalid Credentails");
+			
 //			response.setContentType("text/html");
 //			response.getWriter().print("<html><head></head><body><h1>Invalid Credentails</h1></body></html>");
 		}
