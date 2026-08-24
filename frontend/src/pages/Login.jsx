@@ -2,15 +2,22 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/dermaLogo.png'
 import loginPage from '../assets/loginPageImg.png'
+import { useAuth } from '../context/AuthContext';
+import { loginUser } from '../api/authApi';
+
 function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [regOrLog, setregOrLog] = useState("");
     const formData = new FormData();
 
     const navigate = useNavigate();
 
+    const { login } = useAuth();
+
     const handleRegister = () => {
         navigate("/register");
+        // navigate("/user");
     }
 
     const handleSubmit = async (e) => {

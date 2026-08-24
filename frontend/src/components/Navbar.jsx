@@ -5,8 +5,12 @@ import logo from '../assets/dermaLogo.png';
 import MainButton from './MainButton';
 import { useNavigate } from 'react-router-dom';
 
+import { useAuth } from '../context/AuthContext';
+
 function Navbar() {
     const navigate = useNavigate();
+
+    const { user,isLogin,logout } = useAuth();
 
     const handleLogin = () =>  {
         navigate("/login");
@@ -24,7 +28,13 @@ function Navbar() {
                 <p className='text-black hover:text-neutral-600 cursor-pointer'>Offers</p>
             </div>
             <div className="right px-4">
-                <MainButton title={"Login"} onClick={handleLogin} className={' border-2 border-sky-200 rounded-2xl px-4 py-2 w-30 text-center bg-[#80D9EB] hover:bg-[#5acae0] hover:border-[#5acae0] font-bold text-white  cursor-pointer '} />
+               {
+                isLogin ? (
+                     <MainButton title={user.name} onClick={handleLogin} className={' border-2 border-sky-200 rounded-2xl px-4 py-2 w-30 text-center bg-[#80D9EB] hover:bg-[#5acae0] hover:border-[#5acae0] font-bold text-white  cursor-pointer '} />
+                ):(
+                     <MainButton title={"Login"} onClick={handleLogin} className={' border-2 border-sky-200 rounded-2xl px-4 py-2 w-30 text-center bg-[#5acae0] hover:bg-[#5acae0] hover:border-[#5acae0] font-bold text-white  cursor-pointer '} />
+                )
+               }
             </div>
         </div>
       
