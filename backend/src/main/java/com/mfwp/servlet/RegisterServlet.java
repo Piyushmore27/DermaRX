@@ -62,10 +62,12 @@ public class RegisterServlet extends HttpServlet {
         
         Gson gson = new Gson(); // Needed for react
 		
-		User user = new User();
-		user.setEmail(request.getParameter("username"));
-		user.setMobileNumber(request.getParameter("username"));
-		user.setPassword(request.getParameter("password"));
+		User user = gson.fromJson(request.getReader(), User.class);
+		
+//		System.out.println("Yes: "+user.getUsername());
+//		user.setEmail(request.getParameter("username"));
+//		user.setMobileNumber(request.getParameter("username"));
+//		user.setPassword(request.getParameter("password"));
 		
 		
 		int rowsUpdate = RegisterServlet.createUser(user);
@@ -86,12 +88,10 @@ public class RegisterServlet extends HttpServlet {
 		}else if(rowsUpdate == -1) {
 			
 			userAPI = new ApiResponse<>(
-					false, "Improper Username!!!", user);
-			
-			System.out.println("Improper Username!!!");
-		
+					false, "User Already Exists!!!", user);
+					
 		}else {
-			
+			System.out.println(rowsUpdate);
 			userAPI = new ApiResponse<>(
 					false, "User registration Unsuccessfull", user);
 			
@@ -108,6 +108,17 @@ public class RegisterServlet extends HttpServlet {
 		response.setContentType("application/json");
 		response.getWriter().write(json);
 		
+	}
+	
+	@Override
+	protected void doOptions(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	    response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+	    response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+	    response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+	    response.setHeader("Access-Control-Allow-Credentials", "true");
+
+	    response.setStatus(HttpServletResponse.SC_OK);
 	}
 
 }

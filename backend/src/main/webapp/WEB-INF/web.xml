@@ -23,32 +23,12 @@
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>Register</display-name>
-    <servlet-name>DRXRegister</servlet-name>
-    <servlet-class>com.mfwp.servlet.RegisterServlet</servlet-class>
+    <display-name>User</display-name>
+    <servlet-name>DRXUser</servlet-name>
+    <servlet-class>com.mfwp.servlet.UserServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>DRXRegister</servlet-name>
-    <url-pattern>/api/Register</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>Login</display-name>
-    <servlet-name>DRXLogin</servlet-name>
-    <servlet-class>com.mfwp.servlet.LoginServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>DRXLogin</servlet-name>
-    <url-pattern>/api/Login</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>RegisterServlet</display-name>
-    <servlet-name>RegisterServlet</servlet-name>
-    <servlet-class>com.mfwp.servlet.RegisterServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>RegisterServlet</servlet-name>
-    <url-pattern>/RegisterServlet</url-pattern>
+    <servlet-name>DRXUser</servlet-name>
+    <url-pattern>/api/User</url-pattern>
   </servlet-mapping>
 </web-app>

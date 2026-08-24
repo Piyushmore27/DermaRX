@@ -14,9 +14,9 @@ public class UserService {
 		String query = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
 		
 		
-		if(Pattern.matches(query, user.getEmail())) {
+		if(Pattern.matches(query, user.getUsername())) {
 			
-			user.setEmail(user.getEmail());
+			user.setEmail(user.getUsername());
 			user.setMobileNumber(null);
 
 			return true;
@@ -25,9 +25,9 @@ public class UserService {
 			
 			query = "^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$";
 			
-			if(Pattern.matches(query, user.getMobileNumber())) {
+			if(Pattern.matches(query, user.getUsername())) {
 				
-				user.setMobileNumber(user.getMobileNumber());
+				user.setMobileNumber(user.getUsername());
 				user.setEmail(null);
 
 				return true;
@@ -70,14 +70,14 @@ public class UserService {
 			
 			//Please check if user with email id exists
 			if(userRepostiory.checkifEmailExists(user)) {
-				return 0;
+				return -1;
 			}
 			
 		}else {
 			
 			//Please check if user with mobile number exits
 			if(userRepostiory.checkifMobileNumberExists(user)) {
-				return 0;
+				return -1;
 			}
 		}
 		

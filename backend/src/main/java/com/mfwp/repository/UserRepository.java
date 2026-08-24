@@ -158,6 +158,7 @@ public int saveUser(User user) {
 			if(resultSet.next()) {
 				
 				user.setUserId(resultSet.getLong("User_id"));
+				user.setPassword(null);
 				return true;
 			}
 			

@@ -6,7 +6,7 @@ public class User {
 	private String email;//unquie
 	private String password;
 	private String mobileNumber;//unique
-	private Long roleId;//foreign key  userRole
+	private String username;//foreign key  userRole
 	private String userType;
 	
 	
@@ -41,11 +41,11 @@ public class User {
 	public void setMobileNumber(String mobileNumber) {
 		this.mobileNumber = mobileNumber;
 	}
-	public Long getRoleId() {
-		return roleId;
+	public String getUsername() {
+		return username;
 	}
-	public void setRoleId(Long roleId) {
-		this.roleId = roleId;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
 }

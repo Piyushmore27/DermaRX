@@ -67,23 +67,10 @@ public class LoginServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Credentials", "true");
 		
         Gson gson = new Gson(); // Needed for react
-        System.out.println("Data at Backend");
         
-        BufferedReader reader = request.getReader();
-
-        String json = reader.lines()
-                             .collect(Collectors.joining());
-
-        System.out.println(json);
+        User user = gson.fromJson(request.getReader(), User.class);
 
         
-        
-		User user = new User();
-		user.setPassword(request.getParameter("password"));
-		user.setEmail(request.getParameter("username"));
-		user.setMobileNumber(request.getParameter("username"));
-		
-		
 //		String email=request.getParameter("email");
 //		String mobileNumber=request.getParameter("mobileNumber");
 //		String password=request.getParameter("password");
