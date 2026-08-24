@@ -43,17 +43,21 @@ function Register() {
 
         const formData = new FormData();
 
-        formData.append("username", name);
-        formData.append("password", password);
-        formData.append("role", role);
 
-        console.log(formData);
+        const registerData = {
+            username: name,
+            password: password,
+            
+        };
+
+        console.log(registerData);
+        
 
         try {
-         
-            const response = await api.post("/api/Register", formData);
 
-            
+            const response = await api.post("/api/Register", registerData);
+
+
             const data = response.data;
 
             console.log("Data", data);
