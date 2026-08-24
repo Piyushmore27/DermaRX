@@ -4,6 +4,9 @@ import MainButton from '../components/MainButton';
 import RoleBtn from '../components/RoleBtn';
 import { Eye, EyeOff } from "lucide-react";
 import registerPage from '../assets/registerPAgeImg2.png'
+import { useAuth } from '../context/AuthContext';
+import api from '../api/axios';
+
 function Register() {
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
@@ -11,28 +14,22 @@ function Register() {
     const [role, setRole] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [error, setError] = useState("");
+    const [showError, setShowError] = useState(false);
+
+    const { setLogin } = useAuth();
+
+
     const navigate = useNavigate();
 
     const handleLogin = () => {
         navigate("/login");
     }
 
-    const handleUser = () => {
-        setRole("User")
-    }
-
-    const handleAdmin = () => {
-        setRole("Admin");
-    }
-
-    const handlePharmacist = () => {
-        setRole("Pharmacist");
-    }
-
     const handleRegister = async (e) => {
         e.preventDefault();
 
-    // Basic validation
+        // Basic validation
         if (!name || !password || !confirmPassword) {
             alert("Please fill all fields");
             return;
@@ -46,31 +43,52 @@ function Register() {
 
         const formData = new FormData();
 
-        formData.append("username", name);
-        formData.append("password", password);
-        formData.append("role", role);
 
-        console.log(formData);
+        const registerData = {
+            username: name,
+            password: password,
+            
+        };
 
-        const response = await fetch(
-            "http://localhost:8080/backend/api/Register",
-        {
-            method: "POST",
-            // headers: {
-            //     "Content-Type": "application/x-www-form-urlencoded"
-            // },
-            body: formData
-        }
-        );
-        const data = await response.json();
-
-        if (data.success) {
-            navigate("/");
+        console.log(registerData);
         
-        }else{
-            navigate("/register");
+
+       try {
+
+            const response = await api.post("/api/Register", registerData);
+
+
+            const data = response.data;
+
+            console.log("Data", data);
+
+            if (data.success) {
+                setLogin(true);
+                navigate("/");
+            } else {
+                setError(data.message);
+                setShowError(true);
+
+                setTimeout(() => {
+                    setShowError(false);
+                }, 5000);
+            }
+
+        } catch (error) {
+            console.error("Registration error:", error);
+
+            setError(
+                error.response?.data?.message ||
+                "Registration failed. Please try again."
+            );
+
+            setShowError(true);
+
+            setTimeout(() => {
+                setShowError(false);
+            }, 5000);
         }
-    }
+    };
     return (
         <div className='flex flex-row w-full h-screen bg-[#80D9EB] relative'>
             <section className='left w-[40%] h-screen '>
@@ -90,8 +108,24 @@ function Register() {
                     <img src={registerPage} className='w-100 ' />
                 </div>
             </section>
-            <div className="right w-[60%] bg-white rounded-l-4xl flex flex-col justify-center items-center">
-                <div className="content flex flex-col gap-2 p-4 ">
+            <div className="right w-[60%] bg-white rounded-l-4xl flex flex-col justify-center items-center ">
+                <div className="content flex flex-col gap-2 p-4 relative ">
+                    {showError && (
+                        <div
+                            className={`
+                                     bg-red-100 border border-red-400 text-red-700
+                                        px-2 py-1 rounded w-full mb-4 text-center
+                                        absolute z-40 top-5
+                                        transition-all duration-500 ease-out
+                                        ${showError
+                                    ? "translate-y-0 opacity-100"
+                                    : "translate-y-10 opacity-0"
+                                }
+                            `}
+                        >
+                            {error}
+                        </div>
+                    )}
                     <div className="heading">
                         <h3 className='font-bold text-2xl px-4'>Create Account</h3>
                     </div>

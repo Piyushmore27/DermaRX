@@ -4,41 +4,20 @@ import Home from './pages/Home';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import { AuthProvider } from './context/AuthContext';
+import AppRoutes from './routes/AppRoutes';
 
-const router = createBrowserRouter(
-  [
-    {
-      path:"/",
-      element:
-      <>
-      <Navbar/>
-      <Home/>
-      </>
-    },
-    {
-      path:"/login",
-      element:
-      <>
-      <Login/>
-      </>
-    },
-    {
-      path:"/register",
-      element:
-      <>
-      <Register/>
-      </>
-    }
-  ]
-)
 
 
 function App() {
   
   return (
-    <RouterProvider router={router} className="bg-green-200"  >
-        <Navbar/>
-      </RouterProvider>
+    <AuthProvider>
+      <AppRoutes/>
+
+    
+    </AuthProvider>
+    
   )
 }
 
