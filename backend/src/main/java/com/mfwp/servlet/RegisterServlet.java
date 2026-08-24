@@ -12,8 +12,8 @@ import com.google.gson.Gson;
 import com.mfwp.entity.ApiResponse;
 import com.mfwp.entity.User;
 import com.mfwp.service.UserService;
-
-
+import jakarta.servlet.http.HttpServletRequest;
+import com.google.gson.Gson;
 /**
  * Servlet implementation class RegisterServlet
  */
@@ -36,6 +36,13 @@ public class RegisterServlet extends HttpServlet {
     	
     	UserService userService = new UserService();
     	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
     	return userService.saveUser(user);
     }
     
@@ -49,7 +56,17 @@ public class RegisterServlet extends HttpServlet {
 		response.getWriter().write("Post for registration");
         
 	}
+	@Override
+	protected void doOptions(HttpServletRequest request, HttpServletResponse response)
+	        throws ServletException, IOException {
 
+	    response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+	    response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+	    response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+	    response.setHeader("Access-Control-Allow-Credentials", "true");
+
+	    response.setStatus(HttpServletResponse.SC_OK);
+	}
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -63,13 +80,13 @@ public class RegisterServlet extends HttpServlet {
         
         Gson gson = new Gson(); // Needed for react
 		
-        
-		User user = new User();
-		user.setEmail(request.getParameter("username"));
-		user.setMobileNumber(request.getParameter("username"));
-		user.setPassword(request.getParameter("password"));
-		
-		
+        User user = gson.fromJson(request.getReader(), User.class);
+
+        System.out.println(user);
+        System.out.println(user.getUsername());
+        System.out.println(user.getPassword());
+		user.setUsername(user.getUsername());
+		user.setPassword(user.getPassword());
 		int rowsUpdate = RegisterServlet.createUser(user);
 		
 		ApiResponse<User> userAPI;
@@ -91,7 +108,7 @@ public class RegisterServlet extends HttpServlet {
 		}else {
 			
 			userAPI = new ApiResponse<>(
-					false, "User registration Unsuccessfull", user);
+					false, " yaha esle se reposne aaya hai User registration Unsuccessfull", user);
 			
 //			System.out.println("Sorry!!! User couldn't be registered");
 //			response.getWriter().print("Sorry!!! User couldn't be registered");

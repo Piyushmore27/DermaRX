@@ -20,9 +20,12 @@ public int saveUser(User user) {
 		PreparedStatement preparedStatement=null;
 		ResultSet resultSet =null;
 		try {
-			connection  = DbConnectionUtil.getDatabaseConnection();
+			connection  = DbConnectionUtil.getDataBaseConnection();
 			
-			String roleQuery ="SELECT role_id from roles where User_type = 'user'";
+			
+			
+			
+			String roleQuery ="SELECT role_id from UserRole where role_name = 'user'";
 			preparedStatement = connection.prepareStatement(roleQuery);
 			resultSet = preparedStatement.executeQuery();
 			
@@ -38,7 +41,7 @@ public int saveUser(User user) {
 //			query = "INSERT INTO User (email,password,mobile_number,role_id) VALUES (?,?,?,?)";
 			
 			if(user.getEmail() == null) {
-				query = "INSERT INTO userdb (Password, Phone_number, Role_id) VALUES (?,?,?)";
+				query = "INSERT INTO user (password, mobile_number, role_id) VALUES (?,?,?)";
 				
 				preparedStatement = null;
 				
@@ -49,7 +52,7 @@ public int saveUser(User user) {
 				preparedStatement.setLong(3, roleId);
 			
 			}else {
-				query = "INSERT INTO userdb (Password, Email, Role_id) VALUES (?,?,?)";
+				query = "INSERT INTO user (Password, Email, Role_id) VALUES (?,?,?)";
 				
 				preparedStatement = null;
 				
@@ -89,10 +92,10 @@ public int saveUser(User user) {
 	public boolean checkifEmailExists(User user) {
 		
 		try {
-		Connection connection  = DbConnectionUtil.getDatabaseConnection();
-			
+		Connection connection  = DbConnectionUtil.getDataBaseConnection();
+		
 //		String query ="SELECT 1 FROM user WHERE email = ? LIMIT 1";
-		String query ="SELECT 1 FROM userdb WHERE Email = ? LIMIT 1";
+		String query ="SELECT 1 FROM user WHERE Email = ? LIMIT 1";
 		PreparedStatement preparedStatement = connection.prepareStatement(query);
 		
 		preparedStatement.setString(1,user.getEmail());
@@ -111,10 +114,10 @@ public int saveUser(User user) {
 	public boolean checkifMobileNumberExists(User user) {
 		
 		try {
-		Connection connection  = DbConnectionUtil.getDatabaseConnection();
-			
+		Connection connection  = DbConnectionUtil.getDataBaseConnection();
+		
 //		String query ="SELECT 1 FROM user WHERE mobile_number = ? LIMIT 1";
-		String query ="SELECT 1 FROM userdb WHERE Phone_number = ? LIMIT 1";
+		String query ="SELECT 1 FROM user WHERE mobile_number = ? LIMIT 1";
 		PreparedStatement preparedStatement = connection.prepareStatement(query);
 		
 		preparedStatement.setString(1,user.getMobileNumber());
@@ -132,22 +135,24 @@ public int saveUser(User user) {
 	public boolean isValidUser(User user) {
 		
 		try {
-			Connection connection  = DbConnectionUtil.getDatabaseConnection();
-				
+			Connection connection  = DbConnectionUtil.getDataBaseConnection();
+			
+			
+			
 			String query = "";
 			PreparedStatement preparedStatement = null;
 		//	String query = "SELECT 1 FROM user WHERE (mobile_number = ? AND password=?) OR (email = ? AND password=?) LIMIT 1";
 			
 			
 			if(user.getEmail() == null) {
-				query = "SELECT User_id FROM userdb WHERE (Phone_number = ? AND Password = ?) LIMIT 1";
+				query = "SELECT user_id FROM user WHERE (mobile_number = ? AND Password = ?) LIMIT 1";
 				preparedStatement = connection.prepareStatement(query);
 				preparedStatement.setString(1,user.getMobileNumber());
 				preparedStatement.setString(2,user.getPassword());
 				
 			
 			}else {
-				query = "SELECT User_id FROM userdb WHERE (Email = ? AND Password = ?) LIMIT 1";
+				query = "SELECT user_id FROM user WHERE (Email = ? AND Password = ?) LIMIT 1";
 				preparedStatement = connection.prepareStatement(query);
 				preparedStatement.setString(1,user.getEmail());
 				preparedStatement.setString(2,user.getPassword());
@@ -158,7 +163,7 @@ public int saveUser(User user) {
 			
 			if(resultSet.next()) {
 				
-				user.setUserId(resultSet.getLong("User_id"));
+				user.setUserId(resultSet.getLong("user_id"));
 				return true;
 			}
 			
@@ -176,8 +181,11 @@ public int saveUser(User user) {
 		
 		List<User> userList = new ArrayList<>();
 	try {
-		Connection connection = DbConnectionUtil.getDatabaseConnection();
-		PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from userdb");
+		Connection connection = DbConnectionUtil.getDataBaseConnection();
+		
+		
+		
+		PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from user");
 		
 		ResultSet resultSet=preparedStatement.executeQuery();
 		

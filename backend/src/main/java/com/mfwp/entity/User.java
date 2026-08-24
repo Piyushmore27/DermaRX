@@ -8,7 +8,7 @@ public class User {
 	private String mobileNumber;//unique
 	private Long roleId;//foreign key  userRole
 	private String userType;
-	
+	private String username;
 	
 	
 	public String getUserType() {
@@ -46,6 +46,13 @@ public class User {
 	}
 	public void setRoleId(Long roleId) {
 		this.roleId = roleId;
+	}
+	public String getUsername() {
+	    return username;
+	}
+
+	public void setUsername(String username) {
+	    this.username = username;
 	}
 	
 }

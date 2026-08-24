@@ -10,38 +10,41 @@ public class UserService {
 	
 	
 	private static boolean identifyUsername(User user) {
-		
-		String query = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
-		
-		
-		if(Pattern.matches(query, user.getEmail())) {
-			
-			user.setEmail(user.getEmail());
-			user.setMobileNumber(null);
 
-			return true;
-		
-		}else {
-			
-			query = "^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$";
-			
-			if(Pattern.matches(query, user.getMobileNumber())) {
-				
-				user.setMobileNumber(user.getMobileNumber());
-				user.setEmail(null);
+	    String username = user.getUsername();
 
-				return true;
-			
-			}else {
-				
-				user.setEmail(null);
-				user.setMobileNumber(null);
-				
-				return false;
-			}
-		}
+	    if (username == null || username.trim().isEmpty()) {
+	        return false;
+	    }
+
+	    String query = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
+
+	    // Username is an email
+	    if (Pattern.matches(query, username)) {
+
+	        user.setEmail(username);
+	        user.setMobileNumber(null);
+
+	        return true;
+	    }
+
+	    // Username is a mobile number
+	    query = "^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$";
+
+	    if (Pattern.matches(query, username)) {
+
+	        user.setMobileNumber(username);
+	        user.setEmail(null);
+
+	        return true;
+	    }
+
+	    // Neither email nor mobile
+	    user.setEmail(null);
+	    user.setMobileNumber(null);
+
+	    return false;
 	}
-	
 	
 	
 	//Registration Method

@@ -18,7 +18,7 @@ public class CustomerProfileRepository {
 		int profileUpdate = 0;
 		
 		try {
-			connection = DbConnectionUtil.getDatabaseConnection();
+			connection = DbConnectionUtil.getDataBaseConnection();
 			
 			String query = null;
 			String userIdQuery = "SELECT user_id FROM customerProfile WHERE user_id = ?";
@@ -75,7 +75,7 @@ public class CustomerProfileRepository {
 		
 		List<CustomerProfile> customerProfileList = new ArrayList<>();
 	try {
-		Connection connection = DbConnectionUtil.getDatabaseConnection();
+		Connection connection = DbConnectionUtil.getDataBaseConnection();
 		PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from CustomerProfile");
 		
 		ResultSet resultSet=preparedStatement.executeQuery();

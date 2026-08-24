@@ -18,7 +18,7 @@ public int saveAddress(Address address) {
 		PreparedStatement preparedStatement=null;
 		int addressUpdate=0;
 		try {
-			connection = DbConnectionUtil.getDatabaseConnection();
+			connection = DbConnectionUtil.getDataBaseConnection();
 	
 			String query = "INSERT INTO Address(Line1,Line2,city,state,pincode,country,customer_id) VALUES (?,?,?,?,?,?,?)";
 			
@@ -47,7 +47,7 @@ public int saveAddress(Address address) {
 		
 		List<Address> addressList = new ArrayList<>();
 	try {
-		Connection connection = DbConnectionUtil.getDatabaseConnection();
+		Connection connection = DbConnectionUtil.getDataBaseConnection();
 		PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from address");
 		
 		ResultSet resultSet=preparedStatement.executeQuery();
