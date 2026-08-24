@@ -50,27 +50,45 @@ function Register() {
         formData.append("password", password);
         formData.append("role", role);
 
-        console.log(formData);
-
-        const response = await fetch(
-            "http://localhost:8080/backend/api/Register",
-        {
-            method: "POST",
-            // headers: {
-            //     "Content-Type": "application/x-www-form-urlencoded"
-            // },
-            body: formData
-        }
-        );
-        const data = await response.json();
-
-        if (data.success) {
-            navigate("/");
+        console.log(registerData);
         
-        }else{
-            navigate("/register");
+
+       try {
+
+            const response = await api.post("/api/Register", registerData);
+
+
+            const data = response.data;
+
+            console.log("Data", data);
+
+            if (data.success) {
+                setLogin(true);
+                navigate("/");
+            } else {
+                setError(data.message);
+                setShowError(true);
+
+                setTimeout(() => {
+                    setShowError(false);
+                }, 5000);
+            }
+
+        } catch (error) {
+            console.error("Registration error:", error);
+
+            setError(
+                error.response?.data?.message ||
+                "Registration failed. Please try again."
+            );
+
+            setShowError(true);
+
+            setTimeout(() => {
+                setShowError(false);
+            }, 5000);
         }
-    }
+    };
     return (
         <div className='flex flex-row w-full h-screen bg-[#80D9EB] relative'>
             <section className='left w-[40%] h-screen '>
