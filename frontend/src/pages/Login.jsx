@@ -1,14 +1,18 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/dermaLogo.png'
+import { Eye, EyeOff } from "lucide-react";
 import loginPage from '../assets/loginPageImg.png'
 import { useAuth } from '../context/AuthContext';
 import { loginUser } from '../api/authApi';
+import api from '../api/axios';
 
 function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const formData = new FormData();
+    const [showPassword, setShowPassword] = useState(false);
+    const [error, setError] = useState("");
+    const [showError, setShowError] = useState(false);
 
     const navigate = useNavigate();
 
@@ -20,20 +24,52 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const user = {
+         if (!username || !password ) {
+            alert("Please fill all fields");
+            return;
+        }
+
+        const loginData = {
             username: username,
             password: password
         };
-        formData.append("input", username);
-        formData.append("password", password);
-        console.log(formData);
+
+        console.log(loginData);
+        
 
         try {
-            const response = await API.post("/login", formData);
+            const response = await api.post("/login", loginData);
+            const data = response.data;
+            console.log("DATA",response.data);
 
-            console.log(response.data);
+            if(data.success){
+                
+                login(data.object);
+                console.log("User:", data.object);
+                navigate("/");
+                
+            }else {
+                setError(data.message);
+                setShowError(true);
+
+                setTimeout(() => {
+                    setShowError(false);
+                }, 5000);
+            }
+
         } catch (error) {
-            console.log(error);
+            console.error("Login error:", error);
+
+            setError(
+                error.response?.data?.message ||
+                "Login failed. Please try again."
+            );
+
+            setShowError(true);
+
+            setTimeout(() => {
+                setShowError(false);
+            }, 5000);
         }
 
 
@@ -59,7 +95,23 @@ function Login() {
                     </div>
                 </section>
                 <section className='right w-[80%] h-screen bg-white rounded-l-4xl'>
-                    <div className="flex flex-col justify-center items-center  h-screen gap-4 ">
+                    <div className="flex flex-col justify-center items-center  h-screen gap-4 relative">
+                        {showError && (
+                        <div
+                            className={`
+                                     bg-red-100 border border-red-400 text-red-700
+                                        px-2 py-1 rounded w-fit mb-4 text-center
+                                        absolute z-40 top-5
+                                        transition-all duration-500 ease-out
+                                        ${showError
+                                    ? "translate-y-0 opacity-100"
+                                    : "translate-y-10 opacity-0"
+                                }
+                            `}
+                        >
+                            {error}
+                        </div>
+                    )}
                         <div className="">
 
                             <h3 className='font-bold text-3xl py-2'>Welcome Back👋</h3>
@@ -67,9 +119,18 @@ function Login() {
                             <form className='border border-neutral-200 w-150 h-120 flex flex-col px-10 py-10 gap-4  rounded-2xl shadow'>
                                 <div className="content flex flex-col gap-4">
                                     <p>Username : </p>
-                                    <input placeholder="email@your.com" onChange={(e) => setUsername(e.target.value)} className="px-3 py-2 rounded-lg  border border-neutral-300 outline-none " />
+                                    <input  placeholder="email@your.com" onChange={(e) => setUsername(e.target.value)} className="px-3 py-2 rounded-lg  border border-neutral-300 outline-none " />
                                     <p>Password : </p>
-                                    <input placeholder="password" onChange={(e) => setPassword(e.target.value)} className="px-3 py-2 rounded-lg  border border-neutral-300 outline-none  " />
+                                    <div className="relative">
+                                        <input type={showPassword ? "text" : "password"} placeholder="password" onChange={(e) => setPassword(e.target.value)} className="px-3 py-2 rounded-lg  border border-neutral-300 outline-none w-full " />
+                                    <button
+                                                                                    type="button"
+                                                                                    onClick={() => setShowPassword(!showPassword)}
+                                                                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+                                                                                >
+                                                                                    {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+                                                                                </button>
+                                    </div>
                                     <button onClick={handleSubmit} className='px-3 py-2 bg-[#80D9EB] rounded-lg text-white font-medium hover:cursor-pointer mt-4 shadow-2xl hover:bg-[#6dbccc] hover:shadow-none hover:transform hover:translate-y-0.5 transition-all duration-100'>Login</button>
                                     <button
 

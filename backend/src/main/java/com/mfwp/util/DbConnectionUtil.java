@@ -16,9 +16,7 @@ public class DbConnectionUtil {
 			
 		
 			connection = DriverManager.getConnection(
-	                "jdbc:mysql://gateway01.ap-southeast-1.prod.aws.tidbcloud.com:4000/DermaRX",
-	                "2w4dYu6TWWXpbbH.root",
-	                "7Xd0OanmiGnWdFYv"
+	                ""
 	            );
 			
 		}catch(Exception e) {
