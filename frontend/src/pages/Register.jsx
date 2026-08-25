@@ -63,7 +63,7 @@ function Register() {
             console.log("Data", data);
 
             if (data.success) {
-                login(true);
+                login(data.object);
                 navigate("/");
             } else {
                 setError(data.message);

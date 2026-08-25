@@ -15,7 +15,7 @@ import com.mfwp.service.UserService;
 /**
  * Servlet implementation class LoginServlet
  */
-@WebServlet("/LoginServlet")
+@WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -88,13 +88,55 @@ public class LoginServlet extends HttpServlet {
 		}
 		
 	}
+	
+	@Override
+	protected void doOptions(HttpServletRequest request, HttpServletResponse response)
+	        throws ServletException, IOException {
+
+	    response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+	    response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+	    response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+	    response.setHeader("Access-Control-Allow-Credentials", "true");
+
+	    response.setStatus(HttpServletResponse.SC_OK);
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	        throws ServletException, IOException {
+
+	    response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+	    response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+	    response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+	    response.setHeader("Access-Control-Allow-Credentials", "true");
+
+	    Gson gson = new Gson();
+
+	    User user = gson.fromJson(request.getReader(), User.class);
+
+	    if (LoginServlet.checkUser(user)) {
+
+	        ApiResponse<User> userAPI =
+	                new ApiResponse<>(true, "User Login Successfull", user);
+
+	        String json = gson.toJson(userAPI);
+
+	        response.setContentType("application/json");
+	        response.getWriter().write(json);
+
+	    } else {
+
+	        ApiResponse<User> userAPI =
+	                new ApiResponse<>(false, "Login Failed", user);
+
+	        String json = gson.toJson(userAPI);
+
+	        response.setContentType("application/json");
+	        response.getWriter().write(json);
+	    }
 	}
 
 }
